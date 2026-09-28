@@ -27,5 +27,5 @@ def api_redeem():
 
 
 if __name__ == "__main__":
-    # รองรับทั้งรันเองและบน Render (Render จะส่ง PORT มาให้)
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=False)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
