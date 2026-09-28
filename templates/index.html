@@ -1,1 +1,307 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🔑 Redeem Key</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0908; --card:#141210; --card2:#121412; --border:#262220;
+  --green:#2ee6a8; --green-dark:#1db980; --text:#f2f2f2; --dim:#9a9a9a; --red:#ff5c5c;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Inter',sans-serif; background:var(--bg);
+  background-image:radial-gradient(1100px 480px at 50% -12%, rgba(140,25,25,.28), transparent 70%);
+  color:var(--text); min-height:100vh; display:flex; justify-content:center; padding:48px 16px;
+}
+.wrap{width:100%;max-width:640px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:22px;margin-bottom:18px}
+.label{font-size:11px;letter-spacing:3px;color:var(--dim);font-weight:700;margin-bottom:12px}
 
+.input-row{display:flex;gap:10px}
+#keyInput{flex:1;padding:14px 16px;border-radius:6px;border:1px solid #333;background:#0e0d0c;color:var(--text);font-size:14px;outline:none}
+#keyInput:focus{border-color:var(--green)}
+#btnRedeem{padding:14px 26px;border:none;border-radius:6px;background:linear-gradient(135deg,var(--green-dark),var(--green));color:#04140d;font-weight:800;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif}
+#btnRedeem:disabled{opacity:.5;cursor:wait}
+#status{min-height:22px;margin-top:12px;font-size:13px;font-weight:600;text-align:center}
+#status.err{color:var(--red)} #status.ok{color:var(--green)}
+
+.banner{background:#0c2b1e;border:1px solid #14402e;color:var(--green);text-align:center;padding:18px;border-radius:6px;font-weight:700;margin-bottom:18px}
+
+.plan-card{display:flex;align-items:center;gap:18px;border-color:#4a3d10}
+.plan-icon{width:58px;height:58px;border-radius:6px;background:linear-gradient(135deg,#ff9a3d,#e6402a);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.plan-icon svg{width:30px;height:30px;fill:#fff}
+.plan-name{font-family:'Cinzel',serif;font-size:32px;font-weight:900;background:linear-gradient(180deg,#ffe08a,#c9861b);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.15}
+.plan-sub{color:var(--dim);font-size:13px;margin-top:2px}
+
+.cd-card{display:flex;gap:26px;align-items:center;background:var(--card2);flex-wrap:wrap}
+.ring-box{position:relative;width:150px;height:150px;flex-shrink:0;margin:0 auto}
+.ring{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:#1e2a24;stroke-width:9}
+.ring-fg{fill:none;stroke:var(--green);stroke-width:9;stroke-linecap:round;filter:drop-shadow(0 0 8px rgba(46,230,168,.55));transition:stroke-dashoffset .6s linear,stroke .3s}
+.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#ringDays{font-size:34px;font-weight:900;color:var(--green)}
+.ring-label{font-size:10px;letter-spacing:2px;color:var(--dim);font-weight:700}
+.cd-right{flex:1;min-width:240px}
+.cd-title{font-size:15px;font-weight:800;letter-spacing:1px;margin-bottom:6px}
+.cd-sub{color:var(--dim);font-size:13px;margin-bottom:16px}
+.cd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.cd-box{background:#181a18;border:1px solid #242624;border-radius:4px;padding:14px 6px;text-align:center}
+.cd-num{font-size:26px;font-weight:900}
+.cd-lab{font-size:9px;letter-spacing:2px;color:var(--dim);font-weight:700;margin-top:4px}
+.bar{height:6px;background:#2a2c2a;border-radius:3px;overflow:hidden;margin-bottom:10px}
+.bar-fill{height:100%;width:100%;background:linear-gradient(90deg,var(--green-dark),var(--green));border-radius:3px;transition:width .6s linear}
+.cd-dates{color:var(--dim);font-size:12px}
+.cd-card.expired .ring-fg{stroke:var(--red)}
+.cd-card.expired #ringDays{color:var(--red)}
+
+.profile-row{display:flex;gap:16px;align-items:flex-start}
+.avatar{width:64px;height:64px;border-radius:6px;background:#333;object-fit:cover;flex-shrink:0}
+.p-name{font-size:22px;font-weight:800;margin-bottom:4px}
+.p-desc{color:var(--dim);font-size:13px;line-height:1.6}
+.p-desc b{color:var(--text)}
+
+.dev-title{font-size:12px;letter-spacing:3px;color:var(--dim);font-weight:700;margin:26px 0 12px}
+.dev-card{display:flex;align-items:center;gap:14px;padding:16px 18px;margin-bottom:10px;flex-wrap:wrap}
+.dev-icon{width:40px;height:40px;border-radius:8px;background:#1c1e1c;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.dev-info{flex:1;min-width:100px}
+.dev-name{font-weight:700;font-size:14px}
+.dev-link{font-size:10px;color:#666;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btn-open{padding:9px 16px;border-radius:6px;background:var(--green);color:#04140d;font-weight:800;font-size:13px;text-decoration:none;white-space:nowrap}
+.btn-copy{padding:9px 16px;border-radius:6px;background:transparent;border:1px solid #333;color:var(--text);font-size:13px;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif}
+.btn-copy:hover{border-color:var(--green);color:var(--green)}
+
+.warning{padding:14px;border-radius:6px;background:rgba(234,179,8,.06);border:1px solid rgba(234,179,8,.18);font-size:12px;color:#eab308;text-align:center;margin-top:20px}
+
+@media (max-width:560px){
+  .input-row{flex-direction:column}
+  .cd-card{flex-direction:column}
+  .cd-right{min-width:100%}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ใส่คีย์ -->
+  <div class="card">
+    <div class="label">REDEEM YOUR KEY</div>
+    <div class="input-row">
+      <input id="keyInput" type="text" placeholder="วางคีย์ที่นี่ เช่น NF-XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false">
+      <button id="btnRedeem" onclick="doRedeem()">🔓 รีดีม</button>
+    </div>
+    <div id="status"></div>
+  </div>
+
+  <div id="resultArea" style="display:none;">
+
+    <!-- แถบสำเร็จ -->
+    <div class="banner">✓ &nbsp;Your Netflix is ready</div>
+
+    <!-- แผน -->
+    <div class="card plan-card">
+      <div class="plan-icon">
+        <svg viewBox="0 0 24 24"><path d="M5 16L3 6l5.5 4L12 4l3.5 6L21 6l-2 10H5zm0 2h14v2H5v-2z"/></svg>
+      </div>
+      <div>
+        <div class="label" style="margin-bottom:4px;">YOUR PLAN</div>
+        <div class="plan-name" id="txtPlanName">Premium</div>
+        <div class="plan-sub" id="txtPlanSub">4K · Ultra HD</div>
+      </div>
+    </div>
+
+    <!-- นับถอยหลัง -->
+    <div class="card cd-card" id="cdCard">
+      <div class="ring-box">
+        <svg class="ring" width="150" height="150" viewBox="0 0 150 150">
+          <circle class="ring-bg" cx="75" cy="75" r="62"/>
+          <circle class="ring-fg" id="ringFg" cx="75" cy="75" r="62"/>
+        </svg>
+        <div class="ring-center">
+          <div id="ringDays">-</div>
+          <div class="ring-label">DAYS LEFT</div>
+        </div>
+      </div>
+      <div class="cd-right">
+        <div class="cd-title" id="cdTitle">🎉 YOUR ACCESS IS ACTIVE</div>
+        <div class="cd-sub" id="cdSub">-</div>
+        <div class="cd-grid">
+          <div class="cd-box"><div class="cd-num" id="cdD">00</div><div class="cd-lab">DAYS</div></div>
+          <div class="cd-box"><div class="cd-num" id="cdH">00</div><div class="cd-lab">HRS</div></div>
+          <div class="cd-box"><div class="cd-num" id="cdM">00</div><div class="cd-lab">MIN</div></div>
+          <div class="cd-box"><div class="cd-num" id="cdS">00</div><div class="cd-lab">SEC</div></div>
+        </div>
+        <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+        <div class="cd-dates" id="cdDates">-</div>
+      </div>
+    </div>
+
+    <!-- โปรไฟล์ -->
+    <div class="card">
+      <div class="label">YOUR PROFILE</div>
+      <div class="profile-row">
+        <img class="avatar" id="imgAvatar" src="" alt="">
+        <div>
+          <div class="p-name" id="txtName">-</div>
+          <div class="p-desc">โปรไฟล์นี้เป็นของ<b>คุณ</b> — เปิด Netflix แล้วเลือกโปรไฟล์นี้ได้เลย อย่าแตะโปรไฟล์อื่น</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ลิงก์อุปกรณ์ -->
+    <div class="dev-title">เลือกอุปกรณ์ที่จะเข้าใช้งาน</div>
+    <div id="deviceList"></div>
+
+    <div class="warning">⚠️ ลิงก์เหล่านี้ใช้เข้าระบบโดยไม่ต้องใส่รหัสผ่าน — อย่าแชร์ต่อสาธารณะ</div>
+  </div>
+</div>
+
+<script>
+const DEVICES = [
+  { key:"pc",     icon:"💻", name:"คอมพิวเตอร์" },
+  { key:"mobile", icon:"📱", name:"โทรศัพท์" },
+  { key:"tv",     icon:"📺", name:"ทีวี" },
+];
+const THAI_MONTHS = ["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
+const RING_C = 2 * Math.PI * 62;
+let currentData = null;
+let timer = null;
+
+document.getElementById("ringFg").style.strokeDasharray = RING_C;
+
+function pad(n){ return String(n).padStart(2,"0"); }
+
+function thaiDate(ts){
+  const d = new Date(ts);
+  return d.getDate() + " " + THAI_MONTHS[d.getMonth()] + " " + (d.getFullYear() + 543);
+}
+
+async function doRedeem(){
+  const input = document.getElementById("keyInput");
+  const btn = document.getElementById("btnRedeem");
+  const st = document.getElementById("status");
+  const key = input.value.trim();
+  if(!key){ st.textContent="❌ กรุณาใส่คีย์ก่อน"; st.className="err"; return; }
+
+  btn.disabled = true;
+  btn.textContent = "⏳ กำลังรีดีม...";
+  st.textContent = ""; st.className = "";
+  document.getElementById("resultArea").style.display = "none";
+
+  try{
+    const res = await fetch("/api/redeem",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({key})
+    });
+    const json = await res.json();
+    if(json.ok){ st.textContent="✅ รีดีมสำเร็จ!"; st.className="ok"; showResult(json.data); }
+    else{ st.textContent="❌ "+(json.error||"เกิดข้อผิดพลาด"); st.className="err"; }
+  }catch(e){
+    st.textContent="❌ เชื่อมต่อเซิร์ฟเวอร์ไม่ได้"; st.className="err";
+  }finally{
+    btn.disabled = false;
+    btn.textContent = "🔓 รีดีม";
+  }
+}
+
+function showResult(d){
+  currentData = d;
+
+  // แผน
+  const parts = (d.plan_tier || "").split("·");
+  document.getElementById("txtPlanName").textContent = (parts[0] || "Premium").trim();
+  let sub = (parts[1] || "").trim();
+  if(sub === "UHD") sub = "4K · Ultra HD";
+  document.getElementById("txtPlanSub").textContent = sub || "-";
+
+  // โปรไฟล์
+  document.getElementById("imgAvatar").src = d.avatar_url || "";
+  document.getElementById("txtName").textContent = d.profile_name || "-";
+
+  // นับถอยหลัง
+  if(d.expires_ts){
+    document.getElementById("cdDates").textContent =
+      "เริ่ม " + thaiDate(d.redeemed_ts) + " — สิ้นสุด " + thaiDate(d.expires_ts);
+    const totalDays = Math.max(1, Math.round((d.expires_ts - d.redeemed_ts) / 86400000));
+    document.getElementById("cdSub").textContent =
+      "คีย์นี้ใช้งานได้ทั้งหมด " + totalDays + " วัน นับจากวันรีดีมครั้งแรก";
+    startCountdown(d.expires_ts, d.redeemed_ts);
+  }
+
+  // ลิงก์อุปกรณ์
+  const list = document.getElementById("deviceList");
+  list.innerHTML = "";
+  for(const dev of DEVICES){
+    const link = (d.links && d.links[dev.key]) || null;
+    const card = document.createElement("div");
+    card.className = "card dev-card";
+    card.style.marginBottom = "10px";
+    if(link){
+      card.innerHTML =
+        '<div class="dev-icon">'+dev.icon+'</div>'+
+        '<div class="dev-info"><div class="dev-name">'+dev.name+'</div><div class="dev-link">'+link+'</div></div>'+
+        '<a class="btn-open" href="'+link+'" target="_blank" rel="noopener">เปิด</a>'+
+        '<button class="btn-copy" onclick="copyLink(\''+dev.key+'\')">📋 คัดลอก</button>';
+    }else{
+      card.innerHTML =
+        '<div class="dev-icon">'+dev.icon+'</div>'+
+        '<div class="dev-info"><div class="dev-name">'+dev.name+'</div><div class="dev-link">ไม่พบลิงก์</div></div>';
+    }
+    list.appendChild(card);
+  }
+
+  document.getElementById("resultArea").style.display = "block";
+}
+
+function startCountdown(expiresTs, redeemedTs){
+  if(timer) clearInterval(timer);
+  const total = expiresTs - redeemedTs;
+  const ring = document.getElementById("ringFg");
+  const card = document.getElementById("cdCard");
+
+  function tick(){
+    let rem = expiresTs - Date.now();
+    if(rem < 0) rem = 0;
+
+    const days = Math.floor(rem / 86400000);
+    const hrs  = Math.floor((rem % 86400000) / 3600000);
+    const min  = Math.floor((rem % 3600000) / 60000);
+    const sec  = Math.floor((rem % 60000) / 1000);
+
+    document.getElementById("cdD").textContent = pad(days);
+    document.getElementById("cdH").textContent = pad(hrs);
+    document.getElementById("cdM").textContent = pad(min);
+    document.getElementById("cdS").textContent = pad(sec);
+    document.getElementById("ringDays").textContent = days;
+
+    const frac = total > 0 ? rem / total : 0;
+    ring.style.strokeDashoffset = RING_C * (1 - frac);
+    document.getElementById("barFill").style.width = (frac * 100) + "%";
+
+    if(rem === 0){
+      card.classList.add("expired");
+      document.getElementById("cdTitle").textContent = "⛔ ACCESS EXPIRED — หมดอายุแล้ว";
+      clearInterval(timer);
+    }
+  }
+  tick();
+  timer = setInterval(tick, 1000);
+}
+
+async function copyLink(k){
+  const link = currentData && currentData.links && currentData.links[k];
+  if(!link) return;
+  try{ await navigator.clipboard.writeText(link); alert("✅ คัดลอกลิงก์แล้ว!"); }
+  catch(e){ prompt("คัดลอกเอง:", link); }
+}
+
+document.getElementById("keyInput").addEventListener("keydown", e => {
+  if(e.key === "Enter") doRedeem();
+});
+</script>
+</body>
+</html>
