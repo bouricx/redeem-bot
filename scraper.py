@@ -11,7 +11,7 @@ HEADERS = {
 }
 
 
-def redeem_key(key: str) -> dict:
+def redeem_key(key):
     response = requests.post(
         API_URL,
         json={"code": key},
@@ -20,7 +20,7 @@ def redeem_key(key: str) -> dict:
     )
 
     if response.status_code != 200:
-        raise Exception(f"เว็บตอบกลับผิดพลาด (สถานะ {response.status_code})")
+        raise Exception("เว็บตอบกลับผิดพลาด")
 
     data = response.json()
 
