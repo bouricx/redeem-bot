@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>🔑 Redeem Key</title>
+<title>Redeem Studio · เปิดใช้งานคีย์ของคุณ</title>
+<meta name="description" content="เปิดใช้งานคีย์และดูรายละเอียดแพ็กเกจ โปรไฟล์ และวันหมดอายุในที่เดียว">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
 <style>
@@ -82,18 +83,25 @@ body{
   .cd-right{min-width:100%}
 }
 </style>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='redesign.css') }}">
 </head>
 <body>
+<header class="site-header"><div class="brand"><span class="brand-mark" aria-hidden="true">→</span> Redeem Studio</div><span class="header-note"><i aria-hidden="true"></i>พื้นที่เปิดใช้งานคีย์</span></header>
 <div class="wrap">
+<section class="hero"><div class="eyebrow">YOUR KEY. YOUR EXPERIENCE.</div><h1>ความบันเทิงครั้งต่อไป<br>เริ่มด้วยคีย์ของคุณ</h1><p>เปิดใช้งานคีย์ แล้วดูแพ็กเกจ โปรไฟล์ และระยะเวลาที่เหลือ<br>ได้ในหน้าเดียว เลือกอุปกรณ์แล้วเริ่มใช้งานต่อได้เลย</p></section>
+<div class="workspace"><main class="main-column" id="main-content">
 
   <!-- ใส่คีย์ -->
-  <div class="card">
-    <div class="label">REDEEM YOUR KEY</div>
+  <div class="card redeem-panel">
+    <div class="panel-heading"><span class="panel-number" aria-hidden="true">01</span><div><h2>เปิดใช้งานคีย์</h2><p>กรอกคีย์ที่ได้รับจากคำสั่งซื้อของคุณ</p></div></div>
+    <label class="label" for="keyInput" style="display:block">คีย์ของคุณ / YOUR KEY</label>
     <div class="input-row">
-      <input id="keyInput" type="text" placeholder="วางคีย์ที่นี่ เช่น NF-XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false">
-      <button id="btnRedeem" onclick="doRedeem()">🔓 รีดีม</button>
+      <input id="keyInput" type="text" placeholder="วางคีย์ที่นี่ เช่น NF-XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false" autocapitalize="none" aria-describedby="keyHint status">
+      <button id="btnRedeem" onclick="doRedeem()">เปิดใช้งานคีย์ →</button>
     </div>
-    <div id="status"></div>
+    <p class="input-hint" id="keyHint">คัดลอกคีย์จากคำสั่งซื้อ แล้ววางให้ครบทุกตัวอักษร</p>
+    <div id="status" role="status" aria-live="polite"></div>
   </div>
 
   <div id="resultArea" style="display:none;">
@@ -157,6 +165,7 @@ body{
 
     <div class="warning">⚠️ ลิงก์เหล่านี้ใช้เข้าระบบโดยไม่ต้องใส่รหัสผ่าน — อย่าแชร์ต่อสาธารณะ</div>
   </div>
+</main><aside class="guide" aria-label="วิธีใช้งาน"><div class="card guide-card"><div class="guide-title">เริ่มต้นง่าย ๆ</div><h2>พร้อมใช้งานใน 3 ขั้นตอน</h2><ol class="guide-list"><li><span class="step-number">1</span><div><h3>วางคีย์ของคุณ</h3><p>ใช้คีย์ที่ได้รับจากคำสั่งซื้อ</p></div></li><li><span class="step-number">2</span><div><h3>ตรวจสอบรายละเอียด</h3><p>ดูแพ็กเกจ โปรไฟล์ และวันหมดอายุ</p></div></li><li><span class="step-number">3</span><div><h3>เลือกอุปกรณ์</h3><p>เปิดลิงก์สำหรับอุปกรณ์ที่ต้องการ</p></div></li></ol><p class="help-note">คีย์ใช้งานไม่ได้? ตรวจสอบตัวอักษรและช่องว่าง หรือสอบถามร้านค้าที่ออกคีย์ให้คุณ</p></div><p class="privacy-note"><span aria-hidden="true">◇</span><span>เก็บคีย์และลิงก์เข้าใช้งานเป็นส่วนตัว<br>เพื่อป้องกันผู้อื่นใช้งานแทนคุณ</span></p></aside></div><footer class="site-footer"><span>REDEEM STUDIO · พื้นที่ใช้งานของคุณ</span><span>ไม่ใช่เว็บไซต์อย่างเป็นทางการของ Netflix</span></footer>
 </div>
 
 <script>
@@ -204,7 +213,7 @@ async function doRedeem(){
     st.textContent="❌ เชื่อมต่อเซิร์ฟเวอร์ไม่ได้"; st.className="err";
   }finally{
     btn.disabled = false;
-    btn.textContent = "🔓 รีดีม";
+    btn.textContent = "เปิดใช้งานคีย์ →";
   }
 }
 
